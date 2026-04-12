@@ -81,9 +81,10 @@
     {% endunless %}
     class="product-card__link"
     ref="productCardLink"
+    aria-label="{{ product.title | default: 'actions.view_all' | t | escape }}"
   >
     <span class="visually-hidden">
-      {{ product.title }}
+      {{ product.title | default: 'actions.view_all' | t }}
     </span>
   </a>
   <div

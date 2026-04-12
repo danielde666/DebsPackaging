@@ -7,6 +7,7 @@
   @param {string} [text_fallback] - text to display if image is blank
   @param {boolean} [unset_image_tag] - if true, ignores the image focal point
   @param {string} [style] - additional styles
+  @param {string} [alt] - custom alt text override
 
   @example
   {% render 'image', image: product.featured_image, height: 300, class: 'product-image' %}
@@ -26,7 +27,25 @@
     {% assign style_value = style_value | append: 'object-position: inherit;' %}
   {% endif %}
 
-  {{ image | image_url: height: image_height | image_tag: class: class, srcset: image_srcset, style: style_value }}
+  {%- liquid
+    # Alt text fallback chain: custom alt > image.alt > product title > collection title > page title > empty string (decorative)
+    assign image_alt = alt | default: image.alt
+    if image_alt == blank and product != blank
+      assign image_alt = product.title
+    endif
+    if image_alt == blank and collection != blank
+      assign image_alt = collection.title
+    endif
+    if image_alt == blank and article != blank
+      assign image_alt = article.title
+    endif
+    if image_alt == blank
+      assign image_alt = page_title | default: ''
+    endif
+    assign image_alt = image_alt | escape
+  -%}
+
+  {{ image | image_url: height: image_height | image_tag: alt: image_alt, class: class, srcset: image_srcset, style: style_value }}
 {% elsif text_fallback %}
   {{ text_fallback }}
 {% endif %}

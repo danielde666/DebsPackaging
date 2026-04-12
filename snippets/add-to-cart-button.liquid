@@ -33,6 +33,9 @@
     {% if data_testid %}
       data-testid="{{ data_testid }}"
     {% endif %}
+    {% if icon_only_on_mobile %}
+      aria-label="{{ add_to_cart_text | default: default_add_to_cart_text }}"
+    {% endif %}
     {% unless can_add_to_cart %}
       disabled
     {% endunless %}

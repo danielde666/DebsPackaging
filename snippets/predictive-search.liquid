@@ -222,10 +222,7 @@
 
   .predictive-search-form__header-inner:focus-within {
     outline-offset: var(--focus-outline-offset);
-
-    @media screen and (min-width: 750px) {
-      outline: var(--focus-outline-width) solid var(--color-primary);
-    }
+    outline: var(--focus-outline-width) solid var(--color-primary);
   }
 
   .predictive-search-form__header {
@@ -247,10 +244,8 @@
   .predictive-search-form__header:focus-within,
   .predictive-search-form__header-inner:focus-within,
   .predictive-search-form__header-inner:has(.search-input:is(:focus, :focus-visible)) {
-    outline: none;
     box-shadow: none;
-    /* stylelint-disable-next-line declaration-no-important */
-    border-color: var(--color-border) !important;
+    border-color: var(--color-primary);
   }
 
   .predictive-search-results__inner {
@@ -283,11 +278,18 @@
     color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
   }
 
-  .search-input,
-  .search-input:is(:focus, :focus-visible, :focus-within),
-  .predictive-search-form__header *:is(:focus, :focus-visible) {
+  .search-input {
     outline: none;
-    box-shadow: none;
+  }
+
+  .search-input:focus-visible {
+    outline: none;
+    /* Focus is indicated on the parent .predictive-search-form__header-inner */
+  }
+
+  .predictive-search-form__header *:is(:focus, :focus-visible):not(.search-input) {
+    outline: var(--focus-outline-width) solid var(--color-primary);
+    outline-offset: var(--focus-outline-offset);
   }
 
   .search-input:hover {
