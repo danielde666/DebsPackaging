@@ -92,16 +92,31 @@
       {{ placeholder_name | placeholder_svg_tag: 'slide__image' }}
     {%- endif -%}
   </div>
+  {%- liquid
+    assign slide_backdrop_blur = block_settings.media_blur | default: 0 | plus: 0
+    assign slide_backdrop_full = false
+    if slide_backdrop_blur > 0 and block_settings.text_backdrop_coverage == 'full'
+      assign slide_backdrop_full = true
+    endif
+  -%}
+  {% if slide_backdrop_full %}
+    <div
+      class="slide__text-backdrop slide__text-backdrop--full"
+      style="--slide-text-backdrop-blur: {{ slide_backdrop_blur }}px;"
+      aria-hidden="true"
+    ></div>
+  {% endif %}
   <div
     class="spacing-style slide__content{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}{% if preview_image or block_settings.toggle_overlay %} background-transparent{% endif %}"
-    style="{% render 'spacing-style', settings: block_settings %}"
+    style="{% render 'spacing-style', settings: block_settings %} --slide-text-backdrop-blur: {{ slide_backdrop_blur }}px;"
     {{ block.shopify_attributes }}
   >
     <div
       class="group-block-content
       layout-panel-flex
       layout-panel-flex--{{ block_settings.content_direction }}
-      {% if block_settings.vertical_on_mobile %}mobile-column{% endif %}"
+      {% if block_settings.vertical_on_mobile %}mobile-column{% endif %}
+      {% if slide_backdrop_blur > 0 and block_settings.text_backdrop_coverage == 'contained' %}slide__text-stack--backdrop{% endif %}"
       style="{% render 'layout-panel-style', settings: block_settings %}"
     >
       {% content_for 'blocks' %}
@@ -145,6 +160,25 @@
     height: 100%;
     overflow: hidden;
     position: absolute;
+    z-index: 0;
+  }
+
+  slideshow-slide > .slide__text-backdrop--full {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    backdrop-filter: blur(var(--slide-text-backdrop-blur, 0px));
+    -webkit-backdrop-filter: blur(var(--slide-text-backdrop-blur, 0px));
+  }
+
+  slideshow-slide:has(> .slide__text-backdrop--full) > .slide__content {
+    z-index: 2;
+  }
+
+  .slide__text-stack--backdrop {
+    backdrop-filter: blur(var(--slide-text-backdrop-blur, 0px));
+    -webkit-backdrop-filter: blur(var(--slide-text-backdrop-blur, 0px));
   }
 
   .slide__image-container > .slide__image,
@@ -360,6 +394,35 @@
       "type": "checkbox",
       "id": "toggle_overlay",
       "label": "t:settings.media_overlay"
+    },
+    {
+      "type": "range",
+      "id": "media_blur",
+      "label": "Text backdrop blur",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "Blurs the slide image behind text using backdrop-filter (the image stays sharp)"
+    },
+    {
+      "type": "select",
+      "id": "text_backdrop_coverage",
+      "label": "Backdrop blur area",
+      "options": [
+        {
+          "value": "contained",
+          "label": "Around text only"
+        },
+        {
+          "value": "full",
+          "label": "Full slide"
+        }
+      ],
+      "default": "contained",
+      "info": "Full slide blurs the entire image; around text only blurs behind the text block",
+      "visible_if": "{{ block.settings.media_blur > 0 }}"
     },
     {
       "type": "color",

@@ -381,6 +381,7 @@
     --hero-border-width: {{ section.settings.border_width }}px;
     --hero-border-opacity: {{ section.settings.border_opacity }}%;
     --blur-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
+    --hero-text-backdrop-blur: {{ section.settings.media_blur | default: 0 }}px;
     {% if section.settings.section_height == 'custom' %}
       --hero-min-height: {{ section.settings.section_height_custom }}svh;
     {% elsif section.settings.section_height == "full-screen" %}
@@ -445,19 +446,36 @@
       %}
       {{ media }}
     </div>
+    {%- liquid
+      assign hero_backdrop_blur = section.settings.media_blur | default: 0 | plus: 0
+      assign hero_backdrop_full = false
+      if hero_backdrop_blur > 0 and section.settings.text_backdrop_coverage == 'full'
+        assign hero_backdrop_full = true
+      endif
+    -%}
+    {% if hero_backdrop_full %}
+      <div class="hero__text-backdrop hero__text-backdrop--full" aria-hidden="true"></div>
+    {% endif %}
     <div
       class="
         hero__content-wrapper
-        layout-panel-flex
-        layout-panel-flex--{{ section.settings.content_direction }}
-        {% if section.settings.vertical_on_mobile %}mobile-column{% endif %}
         section-content-wrapper
-        {{section.settings.section_width}}
+        {{ section.settings.section_width }}
         {% if request.design_mode %}hero__content-wrapper--design-mode{% endif %}
       "
-      style="{% render 'layout-panel-style', settings: section.settings %}"
     >
-      {% content_for 'blocks' %}
+      <div
+        class="
+          hero__text-stack
+          layout-panel-flex
+          layout-panel-flex--{{ section.settings.content_direction }}
+          {% if section.settings.vertical_on_mobile %}mobile-column{% endif %}
+          {% if hero_backdrop_blur > 0 and section.settings.text_backdrop_coverage == 'contained' %}hero__text-stack--backdrop{% endif %}
+        "
+        style="{% render 'layout-panel-style', settings: section.settings %}"
+      >
+        {% content_for 'blocks' %}
+      </div>
     </div>
   </div>
 </div>
@@ -514,6 +532,7 @@
   .hero__media-wrapper {
     position: absolute;
     inset: 0;
+    z-index: 0;
     display: grid;
     grid-column: 1 / -1;
     grid-template-columns: repeat(var(--hero-media-count, 1), 1fr);
@@ -546,6 +565,28 @@
     overflow: hidden;
     position: relative;
     z-index: var(--layer-base);
+  }
+
+  .hero__text-backdrop--full {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    backdrop-filter: blur(var(--hero-text-backdrop-blur, 0px));
+    -webkit-backdrop-filter: blur(var(--hero-text-backdrop-blur, 0px));
+  }
+
+  .hero:has(.hero__text-backdrop--full) .hero__content-wrapper {
+    z-index: 2;
+  }
+
+  .hero__text-stack--backdrop {
+    backdrop-filter: blur(var(--hero-text-backdrop-blur, 0px));
+    -webkit-backdrop-filter: blur(var(--hero-text-backdrop-blur, 0px));
+  }
+
+  .hero__text-stack {
+    position: relative;
   }
 
   /* Mobile/Desktop media visibility */
@@ -1080,6 +1121,35 @@
       "type": "checkbox",
       "id": "toggle_overlay",
       "label": "t:settings.media_overlay"
+    },
+    {
+      "type": "range",
+      "id": "media_blur",
+      "label": "Text backdrop blur",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "Blurs the banner image behind text using backdrop-filter (the image stays sharp)"
+    },
+    {
+      "type": "select",
+      "id": "text_backdrop_coverage",
+      "label": "Backdrop blur area",
+      "options": [
+        {
+          "value": "contained",
+          "label": "Around text only"
+        },
+        {
+          "value": "full",
+          "label": "Full banner"
+        }
+      ],
+      "default": "contained",
+      "info": "Full banner blurs the entire image; around text only blurs behind the text block",
+      "visible_if": "{{ section.settings.media_blur > 0 }}"
     },
     {
       "type": "color",
