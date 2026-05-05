@@ -7,6 +7,18 @@
 <header-actions
   {{- block.shopify_attributes -}}
 >
+  {% if header_cta_url != blank and header_cta_title != blank %}
+    <a
+      href="{{ header_cta_url }}"
+      class="header-actions__cta {{ header_cta_button_style | default: 'button' }}"
+      {% if header_cta_current %}
+        aria-current="page"
+      {% endif %}
+    >
+      {{- header_cta_title -}}
+    </a>
+  {% endif %}
+
   {% if shop.customer_accounts_enabled %}
     {% render 'account-popover' %}
     {% render 'account-drawer' %}
@@ -193,10 +205,34 @@
 
   header-actions {
     display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: var(--gap-sm);
 
     @media screen and (max-width: 749px) {
       justify-self: flex-end;
     }
+  }
+
+  .header-actions__cta {
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-family: var(--font-paragraph-family);
+    font-size: var(--font-size--sm);
+    font-weight: var(--font-paragraph-weight);
+    text-decoration: none;
+    text-align: center;
+    padding: var(--padding-xs) var(--padding-md);
+    min-height: var(--minimum-touch-target);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-actions__cta.link {
+    padding-inline: var(--padding-sm);
+    min-height: var(--minimum-touch-target);
+    text-underline-offset: 0.2em;
   }
 
   .header__column--right header-actions {

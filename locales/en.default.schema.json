@@ -94,6 +94,7 @@
     "mobile_media_2": "Mobile media 2",
     // Section header for navigation menu settings in theme editor
     "menu": "Menu",
+    "header_cta": "Call-to-action button",
     "mobile_column_optimization": "Columns will automatically optimize for mobile",
     "mobile_layout": "Mobile layout",
     "mobile_size": "Mobile size",
@@ -223,6 +224,7 @@
     "hide_logo_on_home_page_help": "Logo will remain visible when sticky header is active",
     "hover_effects": "Applies to product and collection cards",
     "logo_font": "Applies only when a logo is not selected",
+    "header_cta_menu_item_handle": "Use the handle of a link that already exists in your header menu (Navigation). Example: a “Get started” page link often has handle `get-started`. On desktop, that item is shown as a button next to the cart and hidden from the main menu row; it still appears in the mobile menu. Prefer a simple link without a mega menu drop-down.",
     "link_accessibility_label": "Describe the link for screen reader users when there is no suitable visible text or image description.",
     "logo_height": "Only affects header logo",
     "manage_countries_regions": "[Manage countries/regions](/admin/settings/markets)",
@@ -887,6 +889,8 @@
     "heading": "Heading",
     "heading_preset": "Heading preset",
     "headings": "Headings",
+    "header_cta_button_style": "CTA appearance",
+    "header_cta_menu_item_handle": "Menu link handle",
     "height": "Height",
     "hide_logo_on_home_page": "Hide logo on home page",
     // Checkbox to hide padding control settings
@@ -1087,6 +1091,7 @@
     "show_powered_by_shopify": "Show \"Powered by Shopify\"",
     "show_sale_price_first": "Show sale price first",
     "show_search": "Show search",
+    "show_header_cta_button": "Show a menu link as CTA next to cart",
     "show_second_image_on_hover": "Show second image on hover",
     "show_swatch_label": "Text labels for swatches",
     "show_tax_info": "Tax information",

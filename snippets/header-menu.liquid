@@ -1,5 +1,9 @@
 {% liquid
   assign block_settings = block.settings
+  assign header_cta_handle = ''
+  if section.settings.show_header_cta_button and section.settings.header_cta_menu_item_handle != blank
+    assign header_cta_handle = section.settings.header_cta_menu_item_handle | strip | downcase
+  endif
   assign menu_content_type = block_settings.menu_style | default: 'text'
   assign image_border_radius = block_settings.image_border_radius
   assign color_scheme_classes = ''
@@ -25,47 +29,56 @@
 
 {% capture children %}
   {% for link in block_settings.menu.links %}
-    <li
-      role="listitem"
-      class="menu-list__list-item"
-      on:focus="/activate"
-      on:blur="/deactivate"
-      on:pointerenter="/activate"
-      on:pointerleave="/deactivate"
-    >
-      <a
-        href="{{ link.url }}"
-        data-skip-node-update="true"
-        class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
-        {%- if link.links != blank -%}
-          aria-controls="submenu-{{ forloop.index }}"
-          aria-haspopup="true"
-          aria-expanded="false"
-        {%- endif -%}
-        ref="menuitem"
+    {% liquid
+      assign link_handle_compare = link.handle | downcase
+      assign is_header_cta_link = false
+      if header_cta_handle != blank and link_handle_compare == header_cta_handle
+        assign is_header_cta_link = true
+      endif
+    %}
+    {% unless is_header_cta_link %}
+      <li
+        role="listitem"
+        class="menu-list__list-item"
+        on:focus="/activate"
+        on:blur="/deactivate"
+        on:pointerenter="/activate"
+        on:pointerleave="/deactivate"
       >
-        <span class="menu-list__link-title">{{- link.title -}}</span>
-      </a>
-      {%- if link.links != blank -%}
-        <div class="menu-list__submenu{{ color_scheme_classes }}" ref="submenu[]">
-          <div
-            id="submenu-{{ forloop.index }}"
-            class="menu-list__submenu-inner"
-            style="{% render 'submenu-font-styles', settings: block_settings %}"
-          >
-            {% assign list_id = 'MegaMenuList-' | append: forloop.index %}
-            {% render 'mega-menu',
-              section: section,
-              parent_link: link,
-              id: list_id,
-              menu_content_type: menu_content_type,
-              content_aspect_ratio: ratio,
-              image_border_radius: image_border_radius
-            %}
+        <a
+          href="{{ link.url }}"
+          data-skip-node-update="true"
+          class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
+          {%- if link.links != blank -%}
+            aria-controls="submenu-{{ forloop.index }}"
+            aria-haspopup="true"
+            aria-expanded="false"
+          {%- endif -%}
+          ref="menuitem"
+        >
+          <span class="menu-list__link-title">{{- link.title -}}</span>
+        </a>
+        {%- if link.links != blank -%}
+          <div class="menu-list__submenu{{ color_scheme_classes }}" ref="submenu[]">
+            <div
+              id="submenu-{{ forloop.index }}"
+              class="menu-list__submenu-inner"
+              style="{% render 'submenu-font-styles', settings: block_settings %}"
+            >
+              {% assign list_id = 'MegaMenuList-' | append: forloop.index %}
+              {% render 'mega-menu',
+                section: section,
+                parent_link: link,
+                id: list_id,
+                menu_content_type: menu_content_type,
+                content_aspect_ratio: ratio,
+                image_border_radius: image_border_radius
+              %}
+            </div>
           </div>
-        </div>
-      {%- endif -%}
-    </li>
+        {%- endif -%}
+      </li>
+    {% endunless %}
   {% endfor %}
   <li
     class="menu-list__list-item"

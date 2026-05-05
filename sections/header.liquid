@@ -59,8 +59,29 @@
     content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'navigation_bar', transparent: transparent
   endcapture
 
+  assign header_cta_url = ''
+  assign header_cta_title = ''
+  assign header_cta_current = false
+  if section.settings.show_header_cta_button and section.settings.header_cta_menu_item_handle != blank
+    assign header_cta_handle_normalized = section.settings.header_cta_menu_item_handle | strip | downcase
+    for section_block in section.blocks
+      if section_block.type == '_header-menu' and header_cta_url == blank
+        for menu_link in section_block.settings.menu.links
+          assign menu_link_handle = menu_link.handle | downcase
+          if menu_link_handle == header_cta_handle_normalized
+            assign header_cta_url = menu_link.url
+            assign header_cta_title = menu_link.title
+            if menu_link.current
+              assign header_cta_current = true
+            endif
+          endif
+        endfor
+      endif
+    endfor
+  endif
+
   capture actions
-    render 'header-actions'
+    render 'header-actions', header_cta_url: header_cta_url, header_cta_title: header_cta_title, header_cta_current: header_cta_current, header_cta_button_style: section.settings.header_cta_button_style
   endcapture
 
   if shop.customer_accounts_enabled
@@ -553,10 +574,12 @@
       Multiple selectors for performance: each simple :has() check is faster than one complex selector with multiple conditions */
     .header__column:has(header-menu:hover),
     .header__column:has(.header-actions__action:hover),
+    .header__column:has(.header-actions__cta:hover),
     .header__column:has(.dropdown-localization__button:hover),
     .header__column:has(.header__icon--menu:hover) {
       header-menu:not(:hover),
       .header-actions__action:not(:hover),
+      .header-actions__cta:not(:hover),
       .dropdown-localization__button:not(:hover),
       .header__icon--menu:not(:hover) {
         opacity: var(--opacity-subdued-text);
@@ -568,6 +591,7 @@
   /* Ensure smooth transitions for all interactive elements */
   header-menu,
   .header-actions__action,
+  .header-actions__cta,
   .dropdown-localization__button,
   .header__icon--menu {
     transition: opacity var(--animation-speed) var(--animation-easing);
@@ -722,6 +746,44 @@
         }
       ],
       "default": "top"
+    },
+    {
+      "type": "header",
+      "content": "t:content.header_cta"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header_cta_button",
+      "label": "t:settings.show_header_cta_button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "header_cta_menu_item_handle",
+      "label": "t:settings.header_cta_menu_item_handle",
+      "info": "t:info.header_cta_menu_item_handle",
+      "visible_if": "{{ section.settings.show_header_cta_button }}"
+    },
+    {
+      "type": "select",
+      "id": "header_cta_button_style",
+      "label": "t:settings.header_cta_button_style",
+      "options": [
+        {
+          "value": "button",
+          "label": "t:options.primary"
+        },
+        {
+          "value": "button-secondary",
+          "label": "t:options.secondary"
+        },
+        {
+          "value": "link",
+          "label": "t:options.link"
+        }
+      ],
+      "default": "button",
+      "visible_if": "{{ section.settings.show_header_cta_button }}"
     },
     {
       "type": "header",
