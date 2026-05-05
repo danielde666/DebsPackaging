@@ -38,7 +38,15 @@
       {% if settings.open_in_new_tab %}
         target="_blank" rel="noopener"
       {% endif %}
-    ></a>
+    >
+      <span class="visually-hidden">
+        {%- if settings.link_accessibility_label != blank -%}
+          {{- settings.link_accessibility_label | escape -}}
+        {%- else -%}
+          {{- 'accessibility.group_block_link' | t -}}
+        {%- endif -%}
+      </span>
+    </a>
   {%- endif -%}
 
   <div class="group-block__media-wrapper">

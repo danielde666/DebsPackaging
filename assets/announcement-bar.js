@@ -1,4 +1,5 @@
 import { Component } from '@theme/component';
+import { setElementHiddenFromAT } from '@theme/utilities';
 
 /**
  * Announcement banner custom element that allows fading between content.
@@ -115,7 +116,7 @@ export class AnnouncementBar extends Component {
     }
 
     this.refs.slides?.forEach((slide, index) => {
-      slide.setAttribute('aria-hidden', `${index !== relativeIndex}`);
+      setElementHiddenFromAT(slide, index !== relativeIndex);
     });
   }
 

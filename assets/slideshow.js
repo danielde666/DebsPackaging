@@ -9,6 +9,7 @@ import {
   preventDefault,
   viewTransition,
   scheduler,
+  setElementHiddenFromAT,
 } from '@theme/utilities';
 import { Scroller, scrollIntoView } from '@theme/scrolling';
 import { SlideshowSelectEvent } from '@theme/events';
@@ -123,7 +124,7 @@ export class Slideshow extends Component {
     for (const slide of this.refs.slides) {
       if (slide.hasAttribute('reveal')) {
         slide.removeAttribute('reveal');
-        slide.setAttribute('aria-hidden', 'true');
+        setElementHiddenFromAT(slide, true);
       }
     }
 
@@ -139,7 +140,7 @@ export class Slideshow extends Component {
         // Force the slide to be revealed if it is hidden
         if (requestedSlide.hasAttribute('hidden')) {
           requestedSlide.setAttribute('reveal', '');
-          requestedSlide.setAttribute('aria-hidden', 'false');
+          setElementHiddenFromAT(requestedSlide, false);
         }
 
         return this.slides.indexOf(requestedSlide);
@@ -211,7 +212,7 @@ export class Slideshow extends Component {
 
     const previousIndex = this.current;
 
-    slide.setAttribute('aria-hidden', 'false');
+    setElementHiddenFromAT(slide, false);
 
     if (this.#scroll) {
       this.#scroll.to(slide, { instant });
@@ -344,7 +345,13 @@ export class Slideshow extends Component {
     if (current) current.textContent = `${value + 1}`;
 
     for (const controls of [thumbnails, dots]) {
-      controls?.forEach((el, i) => el.setAttribute('aria-selected', `${i === value}`));
+      controls?.forEach((el, i) => {
+        if (i === value) {
+          el.setAttribute('aria-current', 'true');
+        } else {
+          el.removeAttribute('aria-current');
+        }
+      });
     }
 
     if (previous) previous.disabled = Boolean(!this.infinite && value === 0);
@@ -439,7 +446,7 @@ export class Slideshow extends Component {
     }
 
     if (this.refs.slides?.[0]) {
-      this.refs.slides[0].setAttribute('aria-hidden', 'false');
+      setElementHiddenFromAT(this.refs.slides[0], false);
     }
   }
 
@@ -784,7 +791,7 @@ export class Slideshow extends Component {
       // Update aria-hidden based on visibility
       slides.forEach((slide) => {
         const isVisible = visibleSlides.includes(slide);
-        slide.setAttribute('aria-hidden', `${!isVisible}`);
+        setElementHiddenFromAT(slide, !isVisible);
       });
     });
 

@@ -755,6 +755,22 @@ export function updateAllHeaderCustomProperties() {
   updateTransparentHeaderOffset();
 }
 
+/**
+ * Pairs `aria-hidden` with `inert` so hidden regions are excluded from the
+ * accessibility tree and cannot be focused (avoid focusable descendants inside
+ * `aria-hidden="true"`).
+ * @param {Element} element
+ * @param {boolean} hidden - When true, hides from AT and makes the subtree non-interactive.
+ */
+export function setElementHiddenFromAT(element, hidden) {
+  element.setAttribute('aria-hidden', String(hidden));
+  if (hidden) {
+    element.setAttribute('inert', '');
+  } else {
+    element.removeAttribute('inert');
+  }
+}
+
 Theme.utilities = {
   ...Theme.utilities,
   scheduler: scheduler,

@@ -2,6 +2,18 @@
 
 {% liquid
   assign block_settings = block.settings
+  assign link_label = block_settings.link_accessibility_label | strip
+  assign image_alt = ''
+  if block_settings.image
+    assign image_alt = block_settings.image.alt | strip
+  endif
+  if block_settings.link != blank and block_settings.image and image_alt == blank
+    if link_label != blank
+      assign image_alt = link_label
+    else
+      assign image_alt = 'accessibility.image_link' | t
+    endif
+  endif
   assign ratio = 1
 
   case block_settings.image_ratio
@@ -51,7 +63,8 @@
         height: block_settings.image.height,
         class: 'image-block__image border-style',
         style: image_border_style,
-        sizes: sizes
+        sizes: sizes,
+        alt: image_alt
     }}
   {%- else -%}
     <div class="placeholder-image border-style size-style" style="{{ image_border_style }}">
@@ -74,6 +87,15 @@
     class="{{ class }}"
     style="{{ style }}"
     {{ block.shopify_attributes }}
+    {% if block_settings.image == blank %}
+      {% liquid
+        assign placeholder_link_label = link_label
+        if placeholder_link_label == blank
+          assign placeholder_link_label = 'accessibility.image_link' | t
+        endif
+      %}
+      aria-label="{{ placeholder_link_label | escape }}"
+    {% endif %}
   >
     {{ image }}
   </a>
@@ -123,6 +145,12 @@
       "type": "url",
       "id": "link",
       "label": "t:settings.link"
+    },
+    {
+      "type": "text",
+      "id": "link_accessibility_label",
+      "label": "t:settings.link_accessibility_label",
+      "info": "t:info.link_accessibility_label"
     },
     {
       "type": "header",
