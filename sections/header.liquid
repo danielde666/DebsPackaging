@@ -62,26 +62,39 @@
   assign header_cta_url = ''
   assign header_cta_title = ''
   assign header_cta_current = false
-  if section.settings.show_header_cta_button and section.settings.header_cta_menu_item_handle != blank
-    assign header_cta_handle_normalized = section.settings.header_cta_menu_item_handle | strip | downcase
-    for section_block in section.blocks
-      if section_block.type == '_header-menu' and header_cta_url == blank
-        for menu_link in section_block.settings.menu.links
-          assign menu_link_handle = menu_link.handle | downcase
-          if menu_link_handle == header_cta_handle_normalized
-            assign header_cta_url = menu_link.url
-            assign header_cta_title = menu_link.title
-            if menu_link.current
-              assign header_cta_current = true
-            endif
-          endif
-        endfor
+  assign header_cta_open_new_tab = false
+  if section.settings.show_header_cta_button
+    assign header_cta_label_stripped = section.settings.header_cta_label | strip
+    assign header_cta_link_setting = section.settings.header_cta_link
+    if header_cta_label_stripped != blank and header_cta_link_setting != blank
+      assign header_cta_url = header_cta_link_setting
+      assign header_cta_title = header_cta_label_stripped
+      assign header_cta_open_new_tab = section.settings.header_cta_open_new_tab
+      assign header_cta_path = header_cta_link_setting | split: '?' | first
+      if header_cta_path == request.path
+        assign header_cta_current = true
       endif
-    endfor
+    elsif section.settings.header_cta_menu_item_handle != blank
+      assign header_cta_handle_normalized = section.settings.header_cta_menu_item_handle | strip | downcase
+      for section_block in section.blocks
+        if section_block.type == '_header-menu' and header_cta_url == blank
+          for menu_link in section_block.settings.menu.links
+            assign menu_link_handle = menu_link.handle | downcase
+            if menu_link_handle == header_cta_handle_normalized
+              assign header_cta_url = menu_link.url
+              assign header_cta_title = menu_link.title
+              if menu_link.current
+                assign header_cta_current = true
+              endif
+            endif
+          endfor
+        endif
+      endfor
+    endif
   endif
 
   capture actions
-    render 'header-actions', header_cta_url: header_cta_url, header_cta_title: header_cta_title, header_cta_current: header_cta_current, header_cta_button_style: section.settings.header_cta_button_style
+    render 'header-actions', header_cta_url: header_cta_url, header_cta_title: header_cta_title, header_cta_current: header_cta_current, header_cta_open_new_tab: header_cta_open_new_tab, header_cta_button_style: section.settings.header_cta_button_style
   endcapture
 
   if shop.customer_accounts_enabled
@@ -758,10 +771,34 @@
       "default": false
     },
     {
+      "type": "paragraph",
+      "content": "t:content.header_cta_instructions",
+      "visible_if": "{{ section.settings.show_header_cta_button }}"
+    },
+    {
+      "type": "text",
+      "id": "header_cta_label",
+      "label": "t:settings.header_cta_label",
+      "visible_if": "{{ section.settings.show_header_cta_button }}"
+    },
+    {
+      "type": "url",
+      "id": "header_cta_link",
+      "label": "t:settings.link",
+      "visible_if": "{{ section.settings.show_header_cta_button }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_cta_open_new_tab",
+      "label": "t:settings.open_new_tab",
+      "default": false,
+      "visible_if": "{{ section.settings.show_header_cta_button }}"
+    },
+    {
       "type": "text",
       "id": "header_cta_menu_item_handle",
       "label": "t:settings.header_cta_menu_item_handle",
-      "info": "t:info.header_cta_menu_item_handle",
+      "info": "t:info.header_cta_menu_item_handle_optional",
       "visible_if": "{{ section.settings.show_header_cta_button }}"
     },
     {

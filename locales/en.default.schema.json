@@ -95,6 +95,7 @@
     // Section header for navigation menu settings in theme editor
     "menu": "Menu",
     "header_cta": "Call-to-action button",
+    "header_cta_instructions": "Choose the button text and where it links. If that page is also in your main menu, add its handle below so it only appears as this button on desktop (not twice).",
     "mobile_column_optimization": "Columns will automatically optimize for mobile",
     "mobile_layout": "Mobile layout",
     "mobile_size": "Mobile size",
@@ -224,7 +225,7 @@
     "hide_logo_on_home_page_help": "Logo will remain visible when sticky header is active",
     "hover_effects": "Applies to product and collection cards",
     "logo_font": "Applies only when a logo is not selected",
-    "header_cta_menu_item_handle": "Use the handle of a link that already exists in your header menu (Navigation). Example: a “Get started” page link often has handle `get-started`. On desktop, that item is shown as a button next to the cart and hidden from the main menu row; it still appears in the mobile menu. Prefer a simple link without a mega menu drop-down.",
+    "header_cta_menu_item_handle_optional": "Optional. If this button uses the same destination as a top-level menu item, enter that item’s handle to hide it from the desktop menu row (it stays in the mobile drawer). Leave blank if the CTA is only set with Button label and Link above. Do not use for items that have a mega menu.",
     "link_accessibility_label": "Describe the link for screen reader users when there is no suitable visible text or image description.",
     "logo_height": "Only affects header logo",
     "manage_countries_regions": "[Manage countries/regions](/admin/settings/markets)",
@@ -890,7 +891,8 @@
     "heading_preset": "Heading preset",
     "headings": "Headings",
     "header_cta_button_style": "CTA appearance",
-    "header_cta_menu_item_handle": "Menu link handle",
+    "header_cta_label": "Button label",
+    "header_cta_menu_item_handle": "Hide menu item (handle)",
     "height": "Height",
     "hide_logo_on_home_page": "Hide logo on home page",
     // Checkbox to hide padding control settings

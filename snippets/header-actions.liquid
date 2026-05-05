@@ -11,11 +11,18 @@
     <a
       href="{{ header_cta_url }}"
       class="header-actions__cta {{ header_cta_button_style | default: 'button' }}"
+      {% if header_cta_open_new_tab %}
+        target="_blank"
+        rel="noopener noreferrer"
+      {% endif %}
       {% if header_cta_current %}
         aria-current="page"
       {% endif %}
     >
       {{- header_cta_title -}}
+      {%- if header_cta_open_new_tab -%}
+        <span class="visually-hidden">{{ 'accessibility.new_window' | t }}</span>
+      {%- endif -%}
     </a>
   {% endif %}
 
