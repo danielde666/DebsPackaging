@@ -390,7 +390,7 @@
         "full_frame_on_mobile": false,
         "slideshow_gap": 12,
         "corner_radius": 0,
-        "slide_height": "large",
+        "slide_height": "medium",
         "content_position": "on-media",
         "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
         "icons_style": "chevron_large",
@@ -496,6 +496,7 @@
             "gradient_direction": "to top",
             "link": "",
             "open_in_new_tab": false,
+            "link_accessibility_label": "",
             "placeholder": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -633,6 +634,7 @@
             "gradient_direction": "to top",
             "link": "shopify://pages/bags",
             "open_in_new_tab": false,
+            "link_accessibility_label": "",
             "placeholder": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -640,29 +642,6 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "image_9kAA8D": {
-              "type": "image",
-              "name": "t:names.image",
-              "settings": {
-                "image": "shopify://shop_images/Slapfish_bag.jpg",
-                "link": "shopify://pages/bags",
-                "image_ratio": "square",
-                "width": "fill",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 11,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
             "text_b3kNaq": {
               "type": "text",
               "name": "t:names.text",
@@ -688,11 +667,35 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "image_9kAA8D": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/Slapfish_bag.jpg",
+                "link": "shopify://pages/bags",
+                "link_accessibility_label": "",
+                "image_ratio": "square",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 11,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
             }
           },
           "block_order": [
-            "image_9kAA8D",
-            "text_b3kNaq"
+            "text_b3kNaq",
+            "image_9kAA8D"
           ]
         },
         "group_YQYGfb": {
@@ -728,6 +731,7 @@
             "gradient_direction": "to top",
             "link": "shopify://pages/cups",
             "open_in_new_tab": false,
+            "link_accessibility_label": "",
             "placeholder": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -735,29 +739,6 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "image_Pmb3WU": {
-              "type": "image",
-              "name": "t:names.image",
-              "settings": {
-                "image": "shopify://shop_images/coffee_cups_2.jpg",
-                "link": "shopify://pages/cups",
-                "image_ratio": "square",
-                "width": "fill",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 11,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
             "text_ymjEHe": {
               "type": "text",
               "name": "t:names.text",
@@ -783,11 +764,35 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "image_Pmb3WU": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/coffee_cups_2.jpg",
+                "link": "shopify://pages/cups",
+                "link_accessibility_label": "",
+                "image_ratio": "square",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 11,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
             }
           },
           "block_order": [
-            "image_Pmb3WU",
-            "text_ymjEHe"
+            "text_ymjEHe",
+            "image_Pmb3WU"
           ]
         },
         "group_BrpheR": {
@@ -823,6 +828,7 @@
             "gradient_direction": "to top",
             "link": "shopify://pages/boxes",
             "open_in_new_tab": false,
+            "link_accessibility_label": "",
             "placeholder": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -830,29 +836,6 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "image_9KtPPm": {
-              "type": "image",
-              "name": "t:names.image",
-              "settings": {
-                "image": "shopify://shop_images/Great_Maple_box.jpg",
-                "link": "shopify://pages/boxes",
-                "image_ratio": "square",
-                "width": "fill",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 11,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
             "text_RqxGjH": {
               "type": "text",
               "name": "t:names.text",
@@ -878,11 +861,35 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "image_9KtPPm": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/Great_Maple_box.jpg",
+                "link": "shopify://pages/boxes",
+                "link_accessibility_label": "",
+                "image_ratio": "square",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 11,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
             }
           },
           "block_order": [
-            "image_9KtPPm",
-            "text_RqxGjH"
+            "text_RqxGjH",
+            "image_9KtPPm"
           ]
         }
       },
@@ -916,8 +923,8 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 100,
-        "padding-block-end": 100
+        "padding-block-start": 20,
+        "padding-block-end": 40
       }
     },
     "hero_jVaWmY": {
@@ -1041,6 +1048,7 @@
             "gradient_direction": "to top",
             "link": "shopify://pages/for-restuarants",
             "open_in_new_tab": false,
+            "link_accessibility_label": "",
             "placeholder": "hero-apparel-2",
             "padding-block-start": 40,
             "padding-block-end": 40,
@@ -1140,6 +1148,7 @@
             "gradient_direction": "to top",
             "link": "shopify://pages/hospitality",
             "open_in_new_tab": false,
+            "link_accessibility_label": "",
             "placeholder": "hero-apparel-1",
             "padding-block-start": 40,
             "padding-block-end": 40,
@@ -1275,6 +1284,7 @@
             "gradient_direction": "to top",
             "link": "",
             "open_in_new_tab": false,
+            "link_accessibility_label": "",
             "placeholder": "",
             "padding-block-start": 25,
             "padding-block-end": 0,
@@ -1333,6 +1343,7 @@
           "settings": {
             "image": "shopify://shop_images/Restaurant-Rotator_2.gif",
             "link": "",
+            "link_accessibility_label": "",
             "image_ratio": "adapt",
             "width": "custom",
             "custom_width": 100,
