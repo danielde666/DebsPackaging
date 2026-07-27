@@ -114,6 +114,17 @@
             {{- block_settings.file_button_label | default: 'Add your artwork' | escape -}}
           </span>
         </label>
+        <div
+          class="custom-property__file-preview"
+          ref="filePreview"
+          hidden
+        >
+          <img
+            class="custom-property__file-preview-image"
+            ref="filePreviewImage"
+            alt="{{ 'content.product_custom_property_file_preview' | t | escape }}"
+          >
+        </div>
         <p
           class="custom-property__file-name"
           ref="fileName"
@@ -258,6 +269,27 @@
   .custom-property__file-label:focus-within {
     outline: var(--focus-outline-width) solid currentcolor;
     outline-offset: var(--focus-outline-offset);
+  }
+
+  .custom-property__file-preview {
+    width: 100%;
+    max-width: 12rem;
+    aspect-ratio: 1;
+    border: var(--style-border-width-inputs) solid var(--color-input-border);
+    border-radius: var(--style-border-radius-inputs);
+    overflow: hidden;
+    background-color: var(--color-input-background, transparent);
+  }
+
+  .custom-property__file-preview[hidden] {
+    display: none;
+  }
+
+  .custom-property__file-preview-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   .custom-property__file-name {

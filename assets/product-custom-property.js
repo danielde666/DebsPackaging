@@ -7,6 +7,8 @@ import { Component } from '@theme/component';
  * @property {HTMLInputElement} [fileInput] - The file input.
  * @property {HTMLElement} [characterCount] - The character count element.
  * @property {HTMLElement} [fileName] - The selected file name element.
+ * @property {HTMLElement} [filePreview] - The preview container.
+ * @property {HTMLImageElement} [filePreviewImage] - The preview image.
  */
 
 /**
@@ -14,12 +16,21 @@ import { Component } from '@theme/component';
  * @extends Component<ProductCustomPropertyRefs>
  */
 class ProductCustomProperty extends Component {
+  /** @type {string | undefined} */
+  #previewObjectUrl;
+
+  disconnectedCallback() {
+    this.#clearPreview();
+    super.disconnectedCallback();
+  }
+
   handleInput() {
     this.#updateCharacterCount();
   }
 
   handleFileChange() {
     this.#updateFileName();
+    this.#updateFilePreview();
   }
 
   #updateCharacterCount() {
@@ -51,6 +62,31 @@ class ProductCustomProperty extends Component {
       fileName.textContent = emptyText;
       fileName.removeAttribute('data-has-file');
     }
+  }
+
+  #updateFilePreview() {
+    const { fileInput, filePreview, filePreviewImage } = this.refs;
+    if (!fileInput || !filePreview || !filePreviewImage) return;
+
+    this.#clearPreview();
+
+    const selectedFile = fileInput.files?.[0];
+    if (!selectedFile || !selectedFile.type.startsWith('image/')) {
+      filePreview.hidden = true;
+      filePreviewImage.removeAttribute('src');
+      return;
+    }
+
+    this.#previewObjectUrl = URL.createObjectURL(selectedFile);
+    filePreviewImage.src = this.#previewObjectUrl;
+    filePreview.hidden = false;
+  }
+
+  #clearPreview() {
+    if (!this.#previewObjectUrl) return;
+
+    URL.revokeObjectURL(this.#previewObjectUrl);
+    this.#previewObjectUrl = undefined;
   }
 }
 
