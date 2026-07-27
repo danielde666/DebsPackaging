@@ -210,6 +210,12 @@
     text-align: center;
   }
 
+  /* Hide cart icon while empty; show once the cart has items */
+  .cart-drawer:not(:has(.header-actions__cart-icon--has-cart)),
+  .header-actions__action.action__cart:not(:has(.header-actions__cart-icon--has-cart)) {
+    display: none;
+  }
+
   header-actions {
     display: flex;
     align-items: center;

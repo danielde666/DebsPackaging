@@ -29,6 +29,7 @@ class CartIcon extends Component {
 
     document.addEventListener(ThemeEvents.cartUpdate, this.onCartUpdate);
     window.addEventListener('pageshow', this.onPageShow);
+    this.#syncCartTriggerVisibility(this.classList.contains('header-actions__cart-icon--has-cart'));
     this.ensureCartBubbleIsCorrect();
   }
 
@@ -75,6 +76,7 @@ class CartIcon extends Component {
     this.currentCartCount = comingFromProductForm ? this.currentCartCount + itemCount : itemCount;
 
     this.classList.toggle('header-actions__cart-icon--has-cart', itemCount > 0);
+    this.#syncCartTriggerVisibility(itemCount > 0);
 
     sessionStorage.setItem(
       'cart-count',
@@ -89,6 +91,17 @@ class CartIcon extends Component {
 
     this.refs.cartBubble.classList.remove('cart-bubble--animating');
   };
+
+  /**
+   * Keep the header cart trigger in sync with cart contents.
+   * @param {boolean} hasCart
+   */
+  #syncCartTriggerVisibility(hasCart) {
+    const trigger = this.closest('cart-drawer-component, .action__cart');
+    if (!trigger) return;
+
+    trigger.toggleAttribute('data-has-cart', hasCart);
+  }
 
   /**
    * Checks if the cart count is correct.
