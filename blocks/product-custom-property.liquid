@@ -91,6 +91,42 @@
         required: block_settings.required,
         formId: product_form_id
       %}
+    {% elsif actual_input_type == 'file' %}
+      {% liquid
+        assign accept_types = block_settings.file_accept | default: '.png,.jpg,.jpeg,.pdf,.ai,.eps,.svg'
+      %}
+      <div class="__input-wrapper __input-wrapper--file">
+        <label class="custom-property__file-label button button-secondary">
+          <input
+            ref="fileInput"
+            on:change="/handleFileChange"
+            type="file"
+            id="{{ element_id }}"
+            name="{{ property_name }}"
+            class="custom-property__file-input visually-hidden"
+            form="{{ product_form_id }}"
+            accept="{{ accept_types | escape }}"
+            {% if block_settings.required %}
+              required aria-required="true"
+            {% endif %}
+          >
+          <span class="custom-property__file-label-text">
+            {{- block_settings.file_button_label | default: 'Add your artwork' | escape -}}
+          </span>
+        </label>
+        <p
+          class="custom-property__file-name"
+          ref="fileName"
+          data-empty-text="{{ 'content.product_custom_property_no_file' | t | escape }}"
+        >
+          {{ 'content.product_custom_property_no_file' | t }}
+        </p>
+        {% if block_settings.file_help_text != blank %}
+          <p class="custom-property__file-help">
+            {{ block_settings.file_help_text | escape }}
+          </p>
+        {% endif %}
+      </div>
     {% else %}
       <div class="__input-wrapper">
         <input
@@ -203,6 +239,43 @@
       outline: var(--focus-outline-width) solid var(--color-input-background);
     }
   }
+
+  product-custom-property-component .__input-wrapper--file {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-xs);
+  }
+
+  .custom-property__file-label {
+    cursor: pointer;
+    min-height: var(--minimum-touch-target);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .custom-property__file-label:focus-within {
+    outline: var(--focus-outline-width) solid currentcolor;
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .custom-property__file-name {
+    margin: 0;
+    font-size: var(--font-size--sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    word-break: break-word;
+  }
+
+  .custom-property__file-name[data-has-file='true'] {
+    color: var(--color-foreground);
+  }
+
+  .custom-property__file-help {
+    margin: 0;
+    font-size: min(0.85em, var(--font-paragraph--size));
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
 {% endstylesheet %}
 
 <script
@@ -250,6 +323,10 @@
         {
           "value": "checkbox",
           "label": "t:settings.product_custom_property.input_type_checkbox"
+        },
+        {
+          "value": "file",
+          "label": "t:settings.product_custom_property.input_type_file"
         }
       ],
       "default": "text"
@@ -270,6 +347,28 @@
       "label": "t:settings.product_custom_property.checkbox_label",
       "default": "t:settings.product_custom_property.default_checkbox_label",
       "visible_if": "{{ block.settings.input_type == \"checkbox\" }}"
+    },
+    {
+      "type": "text",
+      "id": "file_button_label",
+      "label": "t:settings.product_custom_property.file_button_label",
+      "default": "t:settings.product_custom_property.default_file_button_label",
+      "visible_if": "{{ block.settings.input_type == \"file\" }}"
+    },
+    {
+      "type": "text",
+      "id": "file_accept",
+      "label": "t:settings.product_custom_property.file_accept",
+      "default": ".png,.jpg,.jpeg,.pdf,.ai,.eps,.svg",
+      "info": "t:settings.product_custom_property.file_accept_info",
+      "visible_if": "{{ block.settings.input_type == \"file\" }}"
+    },
+    {
+      "type": "text",
+      "id": "file_help_text",
+      "label": "t:settings.product_custom_property.file_help_text",
+      "default": "t:settings.product_custom_property.default_file_help_text",
+      "visible_if": "{{ block.settings.input_type == \"file\" }}"
     },
     {
       "type": "checkbox",
@@ -340,6 +439,22 @@
     {
       "name": "t:names.product_custom_property",
       "category": "t:categories.product"
+    },
+    {
+      "name": "t:names.product_artwork_upload",
+      "category": "t:categories.product",
+      "settings": {
+        "property_heading": "t:settings.product_custom_property.default_artwork_heading",
+        "property_description": "t:settings.product_custom_property.default_artwork_description",
+        "property_key": "Artwork",
+        "input_type": "file",
+        "file_button_label": "t:settings.product_custom_property.default_file_button_label",
+        "file_accept": ".png,.jpg,.jpeg,.pdf,.ai,.eps,.svg",
+        "file_help_text": "t:settings.product_custom_property.default_file_help_text",
+        "required": false,
+        "padding-block-start": 8,
+        "padding-block-end": 8
+      }
     }
   ]
 }
