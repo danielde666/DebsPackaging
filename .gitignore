@@ -24,3 +24,7 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Generated scrape/import data
+/data/
+/scripts/scrape_wcibags_retail.py
